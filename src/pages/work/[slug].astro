@@ -1,0 +1,63 @@
+---
+import Base from '../../layouts/Base.astro';
+import { HEROES, thumbMax, thumbMq } from '../../data/work.js';
+
+export function getStaticPaths() {
+  return HEROES.map(p => ({ params: { slug: p.slug } }));
+}
+
+const { slug } = Astro.params;
+const i = HEROES.findIndex(p => p.slug === slug);
+const p = HEROES[i];
+const next = HEROES[(i + 1) % HEROES.length];
+const facts = [
+  ['Category', p.category],
+  ['Type', 'Spec project'],
+  p.role && ['Role', p.role],
+  p.tools && ['Tools', Array.isArray(p.tools) ? p.tools.join(', ') : p.tools],
+  p.year && ['Year', String(p.year)]
+].filter(Boolean);
+const cta = p.cta_offer ? `/start?offer=${encodeURIComponent(p.cta_offer)}` : '/start';
+const Content = p.Content;
+---
+<Base
+  title={`${p.title} — Case study | RD Studio`}
+  description={p.summary}
+  path={`/work/${p.slug}`}
+  bodyClass={`theme-${p.theme || 'ink'}`}
+>
+<main id="main" class={`cs cs--${p.theme || 'ink'}`}>
+  <section class="cs__hero">
+    <div class="cs__top">
+      <div>
+        <h1 class="cs__title">{p.title}</h1>
+      </div>
+      <p class="cs__sub">{p.summary}</p>
+    </div>
+    <button class="cs__poster" type="button" data-play={p.youtube} data-title={p.title} data-cursor="Play" aria-label={`Play ${p.title}`}>
+      <img src={thumbMax(p.youtube)} alt="" decoding="async" onerror={`this.onerror=null;this.src='${thumbMq(p.youtube)}'`} />
+      <span class="cs__play">Play</span>
+    </button>
+    <dl class="cs__facts">
+      {facts.map(f => <div><dt>{f[0]}</dt><dd>{f[1]}</dd></div>)}
+    </dl>
+  </section>
+
+  <section class="cs__body">
+    <aside class="cs__aside">
+      <p>A spec project: made on our own initiative, not a paid commission, and not endorsed by the brand shown.</p>
+    </aside>
+    <div class="prose"><Content /></div>
+  </section>
+
+  <section class="cs__cta">
+    <h2>Want this for your launch?</h2>
+    <a class="btn" href={cta} data-cursor="link">Start a project →</a>
+  </section>
+
+  <section class="cs__next">
+    <small>Next case study</small>
+    <a href={`/work/${next.slug}`} data-cursor="link">{next.title} <i>→</i></a>
+  </section>
+</main>
+</Base>

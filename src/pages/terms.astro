@@ -1,0 +1,13 @@
+---
+import Base from '../layouts/Base.astro';
+import termsHtml from '../data/terms.html?raw';
+---
+<Base title="Terms and Conditions — RD Studio" description="Scope, timelines, payments, revisions and ownership for RD Studio projects." path="/terms" footerLink={{ href: '/start', label: 'Start a project →' }}>
+<main id="main">
+<section class="terms" id="terms">
+  <p class="tag">Terms and Conditions</p>
+  <h1 class="terms__h">The fine<br>print.</h1>
+  <Fragment set:html={termsHtml} />
+</section>
+</main>
+</Base>

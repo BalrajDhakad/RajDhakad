@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+import { PROCESS } from '../data/offers.js';
+const steps = PROCESS;
+---
+<Base title="About — RD Studio" description="RD Studio is a motion design agency. We strip an idea back to its strongest shape, then move it with intent." path="/about">
+<main id="main">
+<section class="about" id="about">
+  <p class="tag">01 — About</p>
+  <h1 class="about__h">We design things that move.</h1>
+  <div class="about__cols">
+    <p>We’re RD Studio, a motion design agency. We strip an idea back to its strongest shape, then move it with intent: timing first, polish second, nothing decorative.</p>
+    <ul class="skills">
+      <li>Motion Design</li><li>Art Direction</li><li>Visual Design</li><li>3D Motion</li><li>Typography</li><li>Creative Direction</li><li>Video Editing</li>
+    </ul>
+  </div>
+  <div class="marquee" aria-label="Tools: After Effects, Premiere Pro, DaVinci Resolve, Blender, Illustrator, Photoshop, Affinity">
+    <div class="marquee__track" aria-hidden="true"><span>After Effects</span><span>Premiere Pro</span><span>DaVinci Resolve</span><span>Blender</span><span>Illustrator</span><span>Photoshop</span><span>Affinity</span></div>
+  </div>
+</section>
+
+<section class="process" id="process">
+  <p class="tag">02 — Process</p>
+  <ol class="proc">
+    {steps.map(s => <li class="proc__i"><span class="proc__n">{s[0]}</span><h3>{s[1]}</h3><p>{s[2]}</p></li>)}
+  </ol>
+</section>
+
+<section class="founder" id="founder">
+  <p class="tag">03 — Founder</p>
+  <div class="founder__row">
+    <div class="founder__ph"><img src="/images/founder.webp" alt="Raj Dhakad, founder of RD Studio" width="720" height="720" loading="lazy" decoding="async"></div>
+    <div class="founder__tx">
+      <h2 class="founder__n">Raj Dhakad</h2>
+      <p class="founder__role">Founder, RD Studio</p>
+      <p>Raj founded RD Studio and leads its creative direction, staying hands-on from the first frame to the final export.</p>
+    </div>
+  </div>
+</section>
+
+<section class="about-next"><a href="/start" data-cursor="link">Let’s talk <span>→</span></a></section>
+</main>
+</Base>

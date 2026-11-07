@@ -1,0 +1,9 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "headers": [
+    { "source": "/video/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800" }] },
+    { "source": "/brand/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800" }] },
+    { "source": "/images/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800" }] }
+  ]
+}

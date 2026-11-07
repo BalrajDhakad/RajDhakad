@@ -1,0 +1,151 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../site.config.js';
+import { OFFERS, SPECIALIZATIONS, PROCESS } from '../data/offers.js';
+import { MORE } from '../data/more-work.js';
+import { HEROES, thumbMax, thumbMq } from '../data/work.js';
+
+const layouts = ['a', 'b', 'c'];
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: SITE.name,
+  url: SITE.url,
+  logo: SITE.url + '/brand/logo.png',
+  email: SITE.email,
+  description: SITE.description,
+  sameAs: Object.values(SITE.social)
+};
+---
+<Base path="/" footer={false} jsonld={jsonld}>
+<main id="main">
+
+<!-- HERO -->
+<section class="hero">
+  <h1 class="hero__title" aria-label="We move ideas">
+    <span class="line" aria-hidden="true"><span data-split="WE MOVE"></span></span>
+    <span class="line line--2" aria-hidden="true"><span data-split="IDEAS" data-offset="7"></span><i class="dot"></i></span>
+  </h1>
+  <p class="hero__foot"><span>Motion that ideas can’t ignore.</span><span class="scroll">Scroll</span></p>
+</section>
+
+<!-- INTRO: the statement and the identity reel, pinned together -->
+<section class="intro" id="intro">
+  <div class="intro__pin">
+    <p class="tag intro__tag">01 — Intro</p>
+    <div class="intro__text"><p class="statement__text" data-words>We turn ideas into <span class="r">motion</span> people can’t ignore.</p></div>
+    <button class="intro__reel" type="button" data-play={SITE.reel.id} data-title={SITE.reel.title} data-cursor="Play" aria-label="Play the RD Studio identity reel">
+      <video src="/video/identity-loop.mp4" poster="/video/identity-poster.webp" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video>
+    </button>
+  </div>
+</section>
+
+<!-- WORK -->
+<section class="work" id="work">
+  <div class="sec-head"><h2>Selected<br>Work</h2><p class="tag">02 — Work</p></div>
+  {HEROES.map((p, i) => (
+    <article class={`hp hp--${layouts[i % 3]}`} data-hp>
+      <a class="hp__in" href={`/work/${p.slug}`} data-yt={p.youtube} data-start={p.start || 0} data-cursor="Case study">
+        <div class="hp__viz"><div class="yt"></div></div>
+        <h3 class="hp__t"><span>{p.title}</span></h3>
+        <div class="hp__m">
+          <span class="no">{String(i + 1).padStart(2, '0')}</span>
+          <span>{p.category}</span>
+          <span class="spec-tag">Spec project</span>
+          <p>{p.summary}</p>
+        </div>
+        <span class="hp__go">Read the case study →</span>
+      </a>
+    </article>
+  ))}
+
+  <div class="more" id="more">
+    <div class="more__head"><h3 class="more__h">More work</h3><p class="tag">Spec projects</p></div>
+    <div class="more__grid">
+      {MORE.map((m, i) => (
+        <button class="mi" type="button" style={`--i:${i}`} data-play={m.id} data-title={m.title} data-cursor="Play">
+          <span class="mi__f"><img src={thumbMax(m.id)} alt="" loading="lazy" decoding="async" onerror={`this.onerror=null;this.src='${thumbMq(m.id)}'`} /><span class="mi__play">Play</span></span>
+          <span class="mi__t">{m.title}</span>
+          <span class="mi__s">{m.line || 'Spec project'}</span>
+        </button>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- SPECIALIZATION -->
+<section class="spec" id="specialization">
+  <div class="spec__pin">
+    <p class="tag">03 — Specialization</p>
+    <div class="spec__count" aria-hidden="true"><b id="sN">01</b><i>/03</i></div>
+    <ul class="spec__list">
+      {SPECIALIZATIONS.map(s => <li class="spec__item"><h3>{s.t}</h3><p>{s.p}</p></li>)}
+    </ul>
+    <div class="spec__viz" aria-hidden="true"><i class="v v1"></i><i class="v v2"></i><i class="v v3"></i></div>
+    <div class="spec__bar" aria-hidden="true"><b></b></div>
+  </div>
+</section>
+
+<!-- PROCESS (short): a timeline that fills as you scroll -->
+<section class="hproc" id="process">
+  <div class="hproc__head">
+    <div><p class="tag">04 — Process</p><h2 class="hproc__h">How we work</h2></div>
+    <p class="hproc__lede">Five steps, one direction. Nothing moves until the frame is right.</p>
+  </div>
+  <div class="hproc__track">
+    <div class="hproc__rail" aria-hidden="true"><b></b></div>
+    <ol class="hproc__list">
+      {PROCESS.map((st, i) => <li class="hproc__i" style={`--i:${i}`}><i class="hproc__node" aria-hidden="true"></i><span class="hproc__n">{st[0]}</span><h3>{st[1]}</h3><p>{st[2]}</p></li>)}
+    </ol>
+  </div>
+</section>
+
+<div class="launch">
+<div class="flow">
+<!-- HIRE BAND -->
+<section class="band" id="hire" aria-label="Work with us" data-cursor="Would Love to Listen" data-cursor-style="band">
+  <h2 class="band__h"><span><b>Got a launch <em>coming?</em></b></span></h2>
+  <a class="band__btn" href="/start">Would Love<br>to Listen</a>
+</section>
+
+<!-- OFFERS -->
+<section class="offers" id="offers">
+  <div class="offers__head">
+    <div><p class="tag">05 — Offers</p><h2 class="offers__h">Our<br>offers.</h2></div>
+    <div class="cur" role="group" aria-label="Currency"><button type="button" data-cur="USD">USD</button><button type="button" data-cur="INR">INR</button></div>
+  </div>
+  <div class="plans">
+    {OFFERS.map((o, i) => (
+      <article class={'plan' + (i === 0 ? ' open' : '')}>
+        <h3 class="plan__name">{o.name}</h3><button class="plan__tog" type="button" aria-expanded={i === 0 ? 'true' : 'false'} aria-label="Show details"></button><p class="plan__len">{o.len}</p>
+        <p class="plan__price" data-usd={o.usd} data-inr={o.inr}><small>From</small><i class="sym">$</i><b>{o.usd}</b></p>
+        <div class="plan__more"><div class="plan__in"><p class="plan__meta">{o.meta}</p>
+          <a class="plan__go" href={`/start?offer=${encodeURIComponent(o.pick)}`} data-cursor="link">Start this <span>→</span></a>
+          <ul class="plan__list">{o.list.map(li => <li>{li}</li>)}</ul>
+          <p class="plan__no"><b>Not included</b>{o.no}</p></div></div>
+      </article>
+    ))}
+  </div>
+  <p class="offers__foot"><span>Starting points. Exact quote after a short call. 50% to book, 50% before final files.</span><span><a href="/terms" data-cursor="link">Terms and Conditions</a> &nbsp;·&nbsp; <a href="/start" data-cursor="link">Need something else? Tell us</a></span></p>
+</section>
+</div>
+</div>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <p class="tag">06 — Contact</p>
+  <p class="phys-hint" aria-hidden="true">Drag the letters</p>
+  <h2 class="contact__h" aria-label="Let’s move it"><span class="line" aria-hidden="true"><span data-split="LET’S MOVE IT"></span></span></h2>
+  <div class="contact__row">
+    <a class="contact__mail" href="/start" data-magnetic data-cursor="link">Start a project →</a>
+    <ul class="contact__links">
+      <li><a href={SITE.social.instagram} target="_blank" rel="noopener noreferrer" data-cursor="link">Instagram</a></li>
+      <li><a href={SITE.social.linkedin} target="_blank" rel="noopener noreferrer" data-cursor="link">LinkedIn</a></li>
+      <li><a href={SITE.social.x} target="_blank" rel="noopener noreferrer" data-cursor="link">X</a></li>
+      <li><a href={SITE.social.behance} target="_blank" rel="noopener noreferrer" data-cursor="link">Behance</a></li>
+    </ul>
+  </div>
+  <footer class="foot foot--in"><a href="/" class="logo" aria-label="RD Studio — home"></a><a class="foot__terms" href="/terms" data-cursor="link">Terms and Conditions</a></footer>
+</section>
+</main>
+</Base>

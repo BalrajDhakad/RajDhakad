@@ -1,0 +1,106 @@
+---
+import '../styles/global.css';
+import '../styles/site.css';
+import { SITE } from '../site.config.js';
+
+const {
+  title = SITE.title,
+  description = SITE.description,
+  path = '/',
+  bodyClass = '',
+  ogImage = '/og.png',
+  jsonld = null,
+  footer = true,
+  footerLink = { href: '/terms', label: 'Terms and Conditions' },
+  noindex = false
+} = Astro.props;
+const canonical = SITE.url + (path === '/' ? '' : path);
+const og = SITE.url + ogImage;
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{title}</title>
+  <meta name="description" content={description}>
+  <meta name="theme-color" content="#000000">
+  {noindex && <meta name="robots" content="noindex">}
+  <link rel="canonical" href={canonical}>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content={SITE.name}>
+  <meta property="og:title" content={title}>
+  <meta property="og:description" content={description}>
+  <meta property="og:url" content={canonical}>
+  <meta property="og:image" content={og}>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content={og}>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.cdnfonts.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.cdnfonts.com/css/coolvetica" rel="stylesheet">
+  {jsonld && <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />}
+  <script is:inline>
+    try {
+      var d = document.documentElement;
+      if (!sessionStorage.getItem('rd-seen')) d.classList.add('first');   // loader: first visit of the session only
+      if (sessionStorage.getItem('rd-wipe')) d.classList.add('wipe-on');   // arrived through a page transition
+    } catch (e) {}
+  </script>
+</head>
+<body class={bodyClass + ' is-loading'}>
+<a class="skip" href="#main">Skip to content</a>
+<div class="thread" aria-hidden="true"><b></b></div>
+<div class="atmos" aria-hidden="true"><i class="r"></i><i class="w"></i><i class="r"></i><i class="w"></i><i class="r"></i></div>
+
+<div class="loader" aria-hidden="true">
+  <span class="logo"></span>
+  <div class="loader__count"><span id="count">000</span><i>%</i></div>
+  <div class="loader__bar"><b></b></div>
+</div>
+
+<div class="cursor" aria-hidden="true"><span class="cursor__label"></span></div>
+<div class="wipe" aria-hidden="true"></div>
+
+<header class="nav">
+  <a href="/" class="logo" aria-label="RD Studio — home"></a>
+  <nav aria-label="Primary">
+    <a href="/" data-cursor="link"><span data-t="Base">Base</span></a>
+    <a href="/#work" data-cursor="link"><span data-t="Work">Work</span></a>
+    <a href="/about" data-cursor="link"><span data-t="About">About</span></a>
+    <a href="/#contact" data-cursor="link"><span data-t="Contact">Contact</span></a>
+  </nav>
+  <button class="nav__menu" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menuPanel"><span></span><span></span></button>
+</header>
+
+<div class="menu" id="menuPanel" role="dialog" aria-modal="true" aria-label="Menu">
+  <nav aria-label="Mobile">
+    <a href="/"><span><i>01</i>Base</span></a>
+    <a href="/#work"><span><i>02</i>Work</span></a>
+    <a href="/about"><span><i>03</i>About</span></a>
+    <a href="/#contact"><span><i>04</i>Contact</span></a>
+  </nav>
+</div>
+
+<slot />
+
+{footer && (
+  <footer class="foot foot--out">
+    <a href="/" class="logo" aria-label="RD Studio — home"></a>
+    <a class="foot__terms" href={footerLink.href} data-cursor="link">{footerLink.label}</a>
+  </footer>
+)}
+
+<div class="player" id="player" role="dialog" aria-modal="true" aria-label="Video player">
+  <div class="player__top"><span class="player__t" id="pTitle"></span><a class="pbtn" id="pFallback" href="#" target="_blank" rel="noopener noreferrer" hidden>Watch on YouTube</a><button class="pbtn" id="pClose">Close</button></div>
+  <div class="player__stage"><div id="ytMain"></div><p class="player__err" id="pErr" hidden>This video can’t load in this view.<br>Open it on YouTube.</p><button class="player__hit" id="pHit" aria-label="Play or pause"></button></div>
+  <div class="player__bar"><button class="pbtn" id="pPlay">Pause</button><input id="pSeek" type="range" min="0" max="1000" value="0" aria-label="Seek"><span id="pTime">0:00 / 0:00</span><button class="pbtn" id="pMute">Sound on</button><button class="pbtn" id="pFs">Fullscreen</button></div>
+</div>
+
+<script>
+  import '../scripts/main.js';
+</script>
+</body>
+</html>

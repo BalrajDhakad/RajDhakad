@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro';
+import formHtml from '../data/form.html?raw';
+---
+<Base title="Start a project — RD Studio" description="Tell RD Studio about your project. A short form, and we’ll reply within 24 hours." path="/start">
+<main id="main">
+<section class="start" id="start">
+  <p class="tag">Start a project</p>
+  <h1 class="start__h">Tell us<br>about it.</h1>
+  <p class="start__sub">Fill this in and we’ll know exactly where to begin.</p>
+  <Fragment set:html={formHtml} />
+  <div class="form__done" id="fDone" hidden><h2>Expect a Mail from us within the next 24 hours</h2><a href="/" data-cursor="link">Back to base →</a></div>
+</section>
+</main>
+</Base>
